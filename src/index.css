@@ -1,6 +1,10 @@
 @import url(./vendor/fonts/fonts.css);
 @import url(./vendor/normalize.css);
 
+.content-wrapper {
+  max-width: 1140px;
+  margin: 0 auto;
+}
 
 :root {
   --dark-blue: #073042;
