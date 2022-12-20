@@ -1,9 +1,12 @@
 .header {
+  padding: 0 70px;
+}
+
+.header__wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 74px;
-  padding: 0 70px;
 }
 
 .header_page_main {

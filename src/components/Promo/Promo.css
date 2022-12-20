@@ -5,10 +5,7 @@
 
 .promo__wrapper {
   display: flex;
-}
-
-.promo__text-wrapper {
-
+  justify-content: space-between;
 }
 
 .promo__title {
