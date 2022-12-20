@@ -4,13 +4,20 @@ import Main from "../Main/Main";
 import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
 import Register from "../Register/Register";
-function App() {
-  const registerCaption = {
-    text: 'Уже зарегистрированы?',
-    linkText: 'Войти',
-    path: '/sign-in',
-  }
+import Login from "../Login/Login";
 
+const registerCaption = {
+  text: "Уже зарегистрированы?",
+  linkText: "Войти",
+  path: "/sign-in",
+};
+
+const loginCaption = {
+  text: "Ещё не зарегистрированы?",
+  linkText: "Регистрация",
+  path: "/sign-up"
+};
+function App() {
   return (
     <div className="page">
       <Routes>
@@ -22,6 +29,15 @@ function App() {
               title={"Добро пожаловать!"}
               caption={registerCaption}>
                 <Register/>
+            </AuthPage>}
+        />
+        <Route
+          path="sign-in"
+          element={
+            <AuthPage
+              title={"Рады видеть!"}
+              caption={loginCaption}>
+              <Login/>
             </AuthPage>}
         />
       </Routes>

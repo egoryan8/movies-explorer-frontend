@@ -34,6 +34,7 @@
   text-decoration: none;
   color: var(--blue);
   transition: opacity 0.5s linear;
+  margin-left: 6px;
 }
 
 .auth__link:hover {
