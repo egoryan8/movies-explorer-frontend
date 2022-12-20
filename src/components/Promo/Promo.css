@@ -38,4 +38,10 @@
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 3px;
+  transition: opacity 0.5s linear;
+  cursor: pointer;
+}
+
+.promo__button:hover {
+  opacity: 0.6;
 }

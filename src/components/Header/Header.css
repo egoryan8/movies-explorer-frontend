@@ -22,6 +22,11 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 133%;
+  transition: opacity 0.5s linear;
+}
+
+.header__auth-link:hover {
+  opacity: 0.6;
 }
 
 .header__auth-link_contained {
