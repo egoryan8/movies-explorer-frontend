@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
+import Footer from "../Footer/Footer";
 
 const s = () => {
   return (
@@ -12,6 +13,7 @@ const s = () => {
         <Promo/>
         <AboutProject/>
         <Techs/>
+        <Footer/>
       </main>
     </div>
   );
