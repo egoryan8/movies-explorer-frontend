@@ -1,0 +1,56 @@
+.about-project {
+  background-color: var(--black);
+  padding: 110px 70px;
+}
+
+.about-project__cards {
+  display: flex;
+  gap: 40px;
+  margin-top: 70px;
+}
+
+.about-project__card {
+}
+
+.about-project__card-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.about-project__card-paragraph {
+  margin: 26px 0 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 143%;
+}
+
+.about-project__progress {
+  margin-top: 110px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+}
+
+.about-project__progress-item {
+  text-align: center;
+}
+
+.about-project__progress-week {
+  padding: 9px 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  background-color: var(--gray-light);
+}
+
+.about-project__progress-week_accent {
+  background-color: var(--green);
+  color: black;
+}
+
+.about-project__progress-side {
+  margin-top: 14px;
+  color: var(--gray-text);
+}

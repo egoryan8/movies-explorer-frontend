@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 74px;
+  padding: 0 70px;
+}
+
+.header_page_main {
+  background-color: var(--dark-blue);
+}
+
+.header__auth-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header__auth-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 133%;
+}
+
+.header__auth-link_contained {
+  padding: 8px 20px;
+  color: black;
+  background-color: var(--green);
+  border-radius: 3px;
+}
