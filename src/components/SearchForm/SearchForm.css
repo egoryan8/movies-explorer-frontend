@@ -36,10 +36,20 @@
   margin-left: 10px;
   cursor: pointer;
   transition: opacity 0.5s linear;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
 }
 
 .search-form__button:hover {
   opacity: 0.7;
+}
+
+.search-form__line {
+  width: 1px;
+  height: 30px;
+  background-color: white;
 }
 
 .search-form__short-films-checkbox {

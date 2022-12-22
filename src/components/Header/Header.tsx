@@ -9,7 +9,7 @@ const Header: React.FC = () => {
    const locationClass =
     path === "/"
       ? "header_type_landing"
-      : path === "/" || path === "/movies" || path === "/saved-movies"
+      : path === "/" || path === "/movies" || path === "/saved-movies" || path === "/profile"
         ? "header_type_main"
         : "header_hidden";
   return (
@@ -24,10 +24,10 @@ const Header: React.FC = () => {
             </div>
             : <div className="header__navigation-links">
               <div className="header__films-links">
-                <Link to="" className="header__link">Фильмы</Link>
-                <Link to="" className="header__link">Сохранённые фильмы</Link>
+                <Link to="/movies" className="header__link">Фильмы</Link>
+                <Link to="/saved-movies" className="header__link">Сохранённые фильмы</Link>
               </div>
-              <Link to="" className="header__link">
+              <Link to="/profile" className="header__link">
                 Аккаунт
                 <button className="header__profile-button">
                   <img src={ProfileIcon} alt="Иконка профиля"/>
