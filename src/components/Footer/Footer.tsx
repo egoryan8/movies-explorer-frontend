@@ -1,9 +1,15 @@
 import React from 'react';
 import './Footer.css';
+import {useLocation} from "react-router-dom";
 
 const Footer: React.FC = () => {
+  const path = useLocation().pathname;
+  const locationClass =
+    path === "/" || path === "/movies" || path === "/saved-movies"
+      ? ""
+      : "footer_hidden";
   return (
-    <footer className="footer">
+    <footer className={"footer" + " " + locationClass}>
       <div className="content-wrapper">
         <div className="footer__text">Учебный проект Яндекс.Практикум х BeatFilm.</div>
         <div className="footer__wrapper">

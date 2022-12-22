@@ -5,6 +5,8 @@ import React from "react";
 import AuthPage from "../AuthPage/AuthPage";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 const registerCaption = {
   text: "Уже зарегистрированы?",
@@ -20,6 +22,7 @@ const loginCaption = {
 function App() {
   return (
     <div className="page">
+      <Header/>
       <Routes>
         <Route path="/" element={<Main/>}/>
         <Route
@@ -41,6 +44,7 @@ function App() {
             </AuthPage>}
         />
       </Routes>
+      <Footer/>
     </div>
   );
 }
