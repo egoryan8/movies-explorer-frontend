@@ -2,6 +2,7 @@
 @import url(./vendor/normalize.css);
 
 .content-wrapper {
+  padding: 0 70px;
   max-width: 1140px;
   margin: 0 auto;
 }
@@ -14,6 +15,7 @@
   --gray-light: #303030;
   --gray-text: #8B8B8B;
   --gray-input: #2F2F2F;
+  --gray-border: #424242;
   --red: #EE3465;
   --blue: #4285F4;
 

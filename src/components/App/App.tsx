@@ -7,6 +7,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import Movies from "../Movies/Movies";
 
 const registerCaption = {
   text: "Уже зарегистрированы?",
@@ -24,6 +25,8 @@ function App() {
     <div className="page">
       <Header/>
       <Routes>
+        <Route path="/" element={<Main/>}/>
+        <Route path="/movies" element={<Movies/>}/>
         <Route path="/" element={<Main/>}/>
         <Route
           path="sign-up"
