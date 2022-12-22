@@ -40,6 +40,11 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
+  transition: opacity 0.5s linear;
+}
+
+.footer__link:hover {
+  opacity: 0.6;
 }
 
 .footer_hidden {

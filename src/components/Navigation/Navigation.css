@@ -1,0 +1,40 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.navigation__films-links {
+  display: flex;
+  gap: 20px;
+}
+
+.navigation__profile-button {
+  padding: 0;
+  border: none;
+  width: 30px;
+  height: 30px;
+  background: #313131;
+  border-radius: 6px;
+  margin-left: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+
+.navigation__link {
+  color: white;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 129%;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.5s linear;
+}
+
+.navigation__link:hover {
+  opacity: 0.6;
+}

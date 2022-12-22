@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link, useLocation} from "react-router-dom";
 import Logo from "../Logo/Logo";
-import ProfileIcon from "../../images/profile-icon.svg";
 import './Header.css';
+import Navigation from "../Navigation/Navigation";
 
 const Header: React.FC = () => {
   const path = useLocation().pathname;
@@ -19,21 +19,10 @@ const Header: React.FC = () => {
           <Logo/>
           {path === "/"
             ? <div className="header__auth-links">
-              <Link className="header__auth-link" to="/sign-up">Регистрация</Link>
-              <Link className="header__auth-link header__auth-link_contained" to="/sign-in">Войти</Link>
-            </div>
-            : <div className="header__navigation-links">
-              <div className="header__films-links">
-                <Link to="/movies" className="header__link">Фильмы</Link>
-                <Link to="/saved-movies" className="header__link">Сохранённые фильмы</Link>
+                <Link className="header__auth-link" to="/sign-up">Регистрация</Link>
+                <Link className="header__auth-link header__auth-link_contained" to="/sign-in">Войти</Link>
               </div>
-              <Link to="/profile" className="header__link">
-                Аккаунт
-                <button className="header__profile-button">
-                  <img src={ProfileIcon} alt="Иконка профиля"/>
-                </button>
-              </Link>
-            </div>}
+            : <Navigation/>}
         </div>
       </div>
     </header>
