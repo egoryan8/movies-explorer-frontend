@@ -10,6 +10,7 @@ import Footer from "../Footer/Footer";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 
 const registerCaption = {
   text: "Уже зарегистрированы?",
@@ -49,6 +50,7 @@ function App() {
               <Login/>
             </AuthPage>}
         />
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
       <Footer/>
     </div>
