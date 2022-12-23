@@ -49,7 +49,7 @@
 
 @media (max-width: 1023px) {
   .techs {
-    padding: 90px 0;
+    padding: 90px 20px;
   }
   .techs__heading {
     margin-top: 80px;

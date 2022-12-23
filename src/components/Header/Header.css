@@ -24,7 +24,6 @@
   border: none;
   cursor: pointer;
   display: none;
-  height: 22px;
   margin: 0 11px;
   transition: opacity 0.5s linear;
   width: 44px;
@@ -78,7 +77,9 @@
 }
 
 @media (max-width: 450px) {
-
+  .header__wrapper {
+    padding: 0 4px;
+  }
   .header__burger_opened {
     right: 14px;
   }

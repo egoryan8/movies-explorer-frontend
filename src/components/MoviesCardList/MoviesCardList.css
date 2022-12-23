@@ -1,5 +1,5 @@
 .movies-list {
-  padding: 70px 0 79px;
+  padding: 80px 0 79px;
   margin: 0;
   list-style: none;
   display: grid;
@@ -28,4 +28,21 @@
 
 .movies-list__button:hover {
   opacity: 0.7;
+}
+
+@media (max-width: 1023px) {
+  .movies-list {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 47px;
+    padding-bottom: 50px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movies-list {
+    padding: 50px 0;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    row-gap: 47px;
+  }
 }

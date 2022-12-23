@@ -9,9 +9,6 @@
   margin-top: 70px;
 }
 
-.about-project__card {
-}
-
 .about-project__card-title {
   margin: 0;
   font-weight: 400;
@@ -60,7 +57,7 @@
 
 @media (max-width: 1023px) {
   .about-project {
-    padding: 90px 0;
+    padding: 90px 20px;
   }
   .about-project__cards {
     gap: 30px;

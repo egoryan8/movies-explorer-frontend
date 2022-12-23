@@ -57,7 +57,7 @@
 
 @media (max-width: 1023px) {
   .about-me {
-    padding: 90px 0;
+    padding: 90px 20px;
   }
   .about-me__name {
     font-size: 40px;
