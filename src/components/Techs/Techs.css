@@ -71,7 +71,7 @@
 
 @media (max-width: 767px) {
   .techs {
-    padding: 70px 0;
+    padding: 70px 8px;
   }
   .techs__heading {
     margin-top: 60px;

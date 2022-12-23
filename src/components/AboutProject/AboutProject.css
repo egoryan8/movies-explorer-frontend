@@ -80,7 +80,7 @@
 
 @media (max-width: 767px) {
   .about-project {
-    padding: 70px 0;
+    padding: 70px 8px;
   }
   .about-project__cards {
     margin-top: 60px;

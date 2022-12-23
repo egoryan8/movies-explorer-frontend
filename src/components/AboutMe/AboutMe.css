@@ -82,7 +82,7 @@
 
 @media (max-width: 767px) {
   .about-me {
-    padding: 70px 0;
+    padding: 70px 4px;
   }
   .about-me__wrapper {
     flex-direction: column-reverse;
