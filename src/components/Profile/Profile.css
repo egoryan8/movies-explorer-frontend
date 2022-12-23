@@ -64,3 +64,29 @@
 .profile__button_type_exit {
   color: var(--red);
 }
+
+@media (max-width: 1023px) {
+  .profile {
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  .profile__buttons {
+    margin-top: 210px;
+  }
+}
+
+@media (max-width: 767px) {
+  .profile {
+    padding: 70px 0 20px;
+  }
+  .profile__info {
+    margin-top: 80px;
+  }
+  .profile__item {
+    max-width: 260px;
+  }
+  .profile__buttons {
+    margin-top: 379px;
+  }
+}
