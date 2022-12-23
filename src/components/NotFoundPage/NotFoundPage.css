@@ -44,3 +44,16 @@
 .not-found-page__link:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 767px) {
+  .not-found-page__title {
+    font-size: 80px;
+    line-height: 97px;
+  }
+  .not-found-page__paragraph {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+}

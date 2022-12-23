@@ -10,7 +10,7 @@ const AuthPage: React.FC<AuthPageProps> = ({title, caption,  children}) => {
         <div className="auth__wrapper">
           <Logo/>
           <h1 className="auth__title">{title}</h1>
-          <form>
+          <form className="auth__form">
             {children}
           </form>
           <div className="auth__caption-wrapper">

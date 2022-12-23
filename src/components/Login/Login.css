@@ -1,4 +1,5 @@
 .login {
+  box-sizing: border-box;
   padding: 0;
   margin-top: 40px;
   border: none;
@@ -46,6 +47,7 @@
 }
 
 .login__button {
+  width: 100%;
   border: none;
   font-weight: 500;
   font-size: 14px;
@@ -63,4 +65,15 @@
 
 .login__button:hover {
   opacity: 0.6;
+}
+
+@media (max-width: 767px) {
+  .login {
+    min-height: calc(100vh - 308px);
+  }
+  .login__button {
+    margin: 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
 }
