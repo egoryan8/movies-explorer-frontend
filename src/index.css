@@ -21,3 +21,15 @@
 
   --font-family: 'Inter', sans-serif;
 }
+
+@media (max-width: 1023px){
+  .content-wrapper {
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 767px){
+  .content-wrapper {
+    padding: 0 14px;
+  }
+}

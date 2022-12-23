@@ -50,3 +50,33 @@
 .footer_hidden {
   display: none;
 }
+
+@media (max-width: 767px) {
+  .footer__text {
+    font-size: 12px;
+    line-height: 15px;
+    padding-bottom: 21px;
+  }
+  .footer__wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    margin-top: 30px;
+  }
+  .footer__links-list {
+    margin: 0;
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer__copy {
+    margin-top: 30px;
+    color: var(--gray-text);
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .footer__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+}

@@ -40,3 +40,30 @@
 .portfolio__link:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 1023px) {
+  .portfolio {
+    padding-top: 90px;
+  }
+  .portfolio__link {
+    font-size: 28px;
+    line-height: 50px;
+  }
+}
+
+@media (max-width: 767px) {
+  .portfolio {
+    padding-top: 70px;
+  }
+  .portfolio__title {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .portfolio__list {
+    margin-top: 40px;
+  }
+  .portfolio__link {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
