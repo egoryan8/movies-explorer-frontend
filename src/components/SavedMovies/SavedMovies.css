@@ -1,0 +1,6 @@
+.saved-movies {
+  box-sizing: border-box;
+  background-color: var(--black);
+  padding-bottom: 78px;
+  min-height: calc(100vh - 74px - 207px);
+}

@@ -1,0 +1,76 @@
+.movies-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.movies-card__image {
+  border-radius: 6px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.movies-card__overlay {
+  opacity: 0;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  transition: opacity 0.3s linear;
+  cursor: pointer;
+}
+
+.movies-card__overlay-save {
+  background: #313131;
+  border-radius: 30px;
+  padding: 6px 7px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 9px;
+}
+
+.movies-card__overlay-check {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: var(--red);
+  background-image: url("../../images/check-mark.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.movies-card__overlay-cross {
+  background-image: url("../../images/cross.svg");
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: #313131;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.movies-card:hover .movies-card__overlay {
+  opacity: 1;
+}
+
+.movies-card__text-wrapper {
+  margin: 14px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.movies-card__title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.movies-card__duration {
+  padding: 4px 6px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 10px;
+  color: var(--gray-text);
+  background: var(--gray-input);
+  border-radius: 3px;
+}

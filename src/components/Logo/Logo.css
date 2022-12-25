@@ -1,0 +1,12 @@
+.logo {
+  background-image: url("../../images/logo.svg");
+  background-size: cover;
+  background-position: center;
+  width: 38px;
+  height: 38px;
+  transition: opacity 0.5s linear;
+}
+
+.logo:hover {
+  opacity: 0.6;
+}
