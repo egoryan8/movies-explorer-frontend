@@ -1,7 +1,7 @@
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Main from "../Main/Main";
-import React from "react";
+import React, { useState } from "react";
 import AuthPage from "../AuthPage/AuthPage";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
@@ -11,6 +11,8 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import {getUser, login, LoginData, register, RegisterData} from "../../utils/api";
 
 const registerCaption = {
   text: "Уже зарегистрированы?",
@@ -24,21 +26,59 @@ const loginCaption = {
   path: "/sign-up"
 };
 function App() {
+  const navigate = useNavigate();
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<any>({});
+
+  const handleRegister = async(data: RegisterData) => {
+    try {
+      const user = await register(data);
+      setCurrentUser(user);
+      setIsLogged(true);
+      navigate('/sign-in')
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const handleLogin = async(data: LoginData) => {
+    try {
+      const token = await login(data);
+      localStorage.setItem('token', token);
+      const user = await getUser();
+      setCurrentUser(user);
+      setIsLogged(true);
+    } catch(err) {
+      console.log(err)
+    }
+  }
   return (
     <div className="page">
       <Header/>
       <Routes>
         <Route path="/" element={<Main/>}/>
-        <Route path="/movies" element={<Movies/>}/>
-        <Route path="/saved-movies" element={<SavedMovies/>}/>
-        <Route path="/profile" element={<Profile/>}/>
+        <Route
+          path="/movies"
+          element={
+            <ProtectedRoute Component={Movies} isLogged={isLogged}/>
+        }/>
+        <Route
+          path="/saved-movies"
+          element={
+            <ProtectedRoute Component={SavedMovies} isLogged={isLogged}/>
+        }/>
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute Component={Profile} isLogged={isLogged}/>
+        }/>
         <Route
           path="sign-up"
           element={
             <AuthPage
               title={"Добро пожаловать!"}
               caption={registerCaption}>
-                <Register/>
+                <Register handler={handleRegister}/>
             </AuthPage>}
         />
         <Route

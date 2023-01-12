@@ -10,9 +10,9 @@ const AuthPage: React.FC<AuthPageProps> = ({title, caption,  children}) => {
         <div className="auth__wrapper">
           <Logo/>
           <h1 className="auth__title">{title}</h1>
-          <form className="auth__form">
+          <div className="auth__form">
             {children}
-          </form>
+          </div>
           <div className="auth__caption-wrapper">
             <span className="auth__caption">
               {caption.text}
