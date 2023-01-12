@@ -43,11 +43,13 @@ function App() {
 
   const handleLogin = async(data: LoginData) => {
     try {
-      const token = await login(data);
+      const {token} = await login(data);
+      console.log('token:', token);
       localStorage.setItem('token', token);
-      const user = await getUser();
+      const user = await getUser(token);
       setCurrentUser(user);
       setIsLogged(true);
+      navigate('/movies');
     } catch(err) {
       console.log(err)
     }
@@ -87,7 +89,7 @@ function App() {
             <AuthPage
               title={"Рады видеть!"}
               caption={loginCaption}>
-              <Login/>
+              <Login handler={handleLogin}/>
             </AuthPage>}
         />
         <Route path="*" element={<NotFoundPage/>}/>

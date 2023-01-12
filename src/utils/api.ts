@@ -49,6 +49,11 @@ export const updateUser = (data: UpdateData) => {
   })
 }
 
-export function getUser() {
-  return handleRequest('users/me');
+export function getUser(token: string) {
+  return handleRequest('users/me', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization' : `Bearer ${token}`,
+    }
+  });
 }
