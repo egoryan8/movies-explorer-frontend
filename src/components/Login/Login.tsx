@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./Login.css";
-import {LoginData, RegisterData} from "../../utils/api";
+import {LoginData} from "../../utils/api";
 
 interface LoginProps {
   handler: (data: LoginData) => void;
@@ -23,7 +23,6 @@ const Register: React.FC<LoginProps> = ({handler}) => {
       email,
       password,
     }
-    console.log(data);
     handler(data);
   }
   return (

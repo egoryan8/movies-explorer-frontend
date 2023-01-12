@@ -30,7 +30,6 @@ const Register: React.FC<RegisterProps> = ({handler}) => {
       email,
       password,
     }
-    console.log(data);
     handler(data);
   }
 
