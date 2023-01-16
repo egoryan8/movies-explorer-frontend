@@ -4,7 +4,10 @@ import Logo from "../Logo/Logo";
 import './Header.css';
 import Navigation from "../Navigation/Navigation";
 
-const Header: React.FC = () => {
+interface HeaderProps  {
+  isLogged: boolean;
+}
+const Header: React.FC<HeaderProps> = ({isLogged}) => {
   const path = useLocation().pathname;
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
 
@@ -30,15 +33,21 @@ const Header: React.FC = () => {
           <Logo/>
           {path !== "/"
             && <button
-                className={`header__burger ${isBurgerOpened ? 'header__burger_opened' : ''}`}
-                type='button'
-                onClick={openBurger}
-              />}
+              className={`header__burger ${isBurgerOpened ? 'header__burger_opened' : ''}`}
+              type='button'
+              onClick={openBurger}
+            />}
           {path === "/"
-            ? <div className="header__auth-links">
-              <Link className="header__auth-link" to="/sign-up">Регистрация</Link>
-              <Link className="header__auth-link header__auth-link_contained" to="/sign-in">Войти</Link>
-            </div>
+            ? isLogged ?
+              <Link className='navigation__link navigation__link_type_icon' to='/profile'>
+                Аккаунт
+                <div className='navigation__link-icon navigation__link-icon_type_profile'/>
+              </Link>
+              :
+              <div className="header__auth-links">
+                <Link className="header__auth-link" to="/sign-up">Регистрация</Link>
+                <Link className="header__auth-link header__auth-link_contained" to="/sign-in">Войти</Link>
+              </div>
             : <Navigation isVisible={isBurgerOpened} onClose={closeBurger}/>}
         </div>
       </div>
