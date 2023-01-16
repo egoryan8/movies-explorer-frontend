@@ -16,7 +16,11 @@ export interface UpdateData {
 
 const handleRequest = async (url: string, options?: RequestInit) => {
   const res = await fetch(`https://api.fogel.movies.nomoredomains.club/${url}`, options);
-  return await res.json();
+  if (res.ok) {
+    return await res.json();
+  }
+  const err = await res.json();
+  return Promise.reject(err);
 }
 
 export const register = (data: RegisterData) => {

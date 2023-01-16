@@ -102,8 +102,7 @@ function App() {
       return movies;
     } catch (err) {
       console.log(err)
-    }
-    finally {
+    } finally {
       setInRequest(false);
     }
   }
@@ -111,8 +110,8 @@ function App() {
   // добавление в массив поля с типом фильма (лайкнут или нет)
   const showLikedMovies = (movies: MovieI[]) => {
     return movies.map(movie => {
-      const match = savedMovies.find(({ id }) => id === movie.id);
-      return match ? { ...movie, type: 'liked' } : { ...movie, type: 'default' }
+      const match = savedMovies.find(({id}) => id === movie.id);
+      return match ? {...movie, type: 'liked'} : {...movie, type: 'default'}
     });
   }
 
@@ -125,7 +124,7 @@ function App() {
 
   // фильтрация фильмов по строке поиска и чекбоксу
   const filterMovies = (movies: MovieI[], searchValue: string, isShortFilm?: boolean) => {
-    return movies.filter(({ nameRU, nameEN, duration }) => {
+    return movies.filter(({nameRU, nameEN, duration}) => {
       const textToMatch = (nameRU + nameEN).toLowerCase();
       const normalizedQuery = searchValue.toLowerCase();
 
@@ -175,6 +174,22 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    const savedSearch = localStorage.getItem('searchedMovies');
+    if (savedSearch) {
+      setSearchedMovies(JSON.parse(savedSearch));
+    }
+  }, []);
+
+  // хранение фильмов в sessionStorage для восстановления хранилища при релоаде страницы
+
+  useEffect(() => {
+    const initialStorage = sessionStorage.getItem('movies');
+    if (initialStorage) {
+      setMovies(JSON.parse(initialStorage));
+    }
+  }, [])
+
   const handleRegister = async (data: RegisterData) => {
     try {
       const user = await register(data);
@@ -198,6 +213,28 @@ function App() {
       console.log(err)
     }
   }
+
+  // аутентификация при монтировании приложения
+  const authUser = async () => {
+    try {
+      const user = await getUser(localStorage.getItem('token') || '');
+      if (user.email) {
+        setIsLogged(true);
+        setCurrentUser(user);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setServerError(err.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // аутентификация при монтировании приложения
+  useEffect(() => {
+    authUser();
+  }, []);
 
   const handleLogout = () => {
     setIsLogged(false);
