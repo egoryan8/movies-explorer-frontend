@@ -1,33 +1,34 @@
 import React from 'react';
 import MoviesCard from "../MoviesCard/MoviesCard";
 import './MoviesCardList.css';
-import {MoviesCardListProps} from "./MoviesCardList.props";
+import {MovieI} from "../../utils/MoviesApi";
 
-const MoviesCardList: React.FC<MoviesCardListProps> = ({savedPage}) => {
+interface MoviesCardListProps {
+  movies: MovieI[];
+  onSaveMovie?: any;
+  onRemoveMovie: any;
+}
+
+const MoviesCardList: React.FC<MoviesCardListProps> = ({movies, onSaveMovie, onRemoveMovie}) => {
   return (
-    <div> {savedPage
-      ?
+    <div>
       <ul className="movies-list">
-        <MoviesCard saved={true} cross={true}/>
-        <MoviesCard saved={true} cross={true}/>
-        <MoviesCard saved={true} cross={true}/>
+        {movies.map(m => (
+          <MoviesCard
+            key={m.movieId}
+            title={m.nameRU}
+            imageLink={m.image}
+            duration={m.duration}
+            trailerLink={m.trailerLink}
+            onSaveMovie={onSaveMovie}
+            onRemoveMovie={onRemoveMovie}
+            movieId={m.movieId}
+            type={m.type}
+          />
+        ))}
+
       </ul>
-      :
-      <ul className="movies-list">
-        <MoviesCard saved={false}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={false}/>
-        <MoviesCard saved={false}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={false}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={true}/>
-        <MoviesCard saved={true}/>
-      </ul>}
-      {!savedPage && <button className="movies-list__button">Ещё</button>}
+      <button className="movies-list__button">Ещё</button>
     </div>
   );
 };

@@ -144,6 +144,7 @@ function App() {
     setIsDisable(true)
     try {
       const movies = await getFilms();
+      console.log('movies: ', movies);
       setMovies(movies);
       return movies;
     } catch (err) {
@@ -155,7 +156,7 @@ function App() {
   // добавление в массив поля с типом фильма (лайкнут или нет)
   const showLikedMovies = (movies: MovieI[]) => {
     return movies.map(movie => {
-      const match = savedMovies.find(({id}) => id === movie.id);
+      const match = savedMovies.find(({movieId}) => movieId === movie.movieId);
       return match ? {...movie, type: 'saved'} : {...movie, type: 'default'}
     });
   };
@@ -199,6 +200,7 @@ function App() {
       tempMovies = movies;
     }
     if (tempMovies) {
+      console.log('temp: ', tempMovies.map(m => ({...m, image: `https://api.nomoreparties.co${m.image.url}`})));
       const filteredMovies = filterMovies(tempMovies, searchValue);
       setSearchedMovies(filteredMovies);
       const filteredMoviesByThumb = filterMovies(filteredMovies, searchValue, isShortFilm);
@@ -286,7 +288,8 @@ function App() {
   };
   const handleSaveMovie = async (id: number) => {
     try {
-      const movie = searchedMovies.find(item => item.id === id);
+      const movie = searchedMovies.find(item => item.movieId === id);
+      console.log('movie: ', movie);
       if (movie) {
         const savedMovie = await saveMovie(movie);
         setSavedMovies(movies => [...movies, savedMovie])
@@ -298,11 +301,11 @@ function App() {
   };
   const handleRemoveMovie = async (id: number) => {
     try {
-      const removedMovie = savedMovies.find(movie => movie.id === id);
+      const removedMovie = savedMovies.find(movie => movie.movieId === id);
       if (removedMovie) {
-        await deleteMovie(String(removedMovie.id));
-        setSavedMovies(movies => [...movies.filter((mov) => mov.id !== id)]);
-        setFilteredSavedMovies(movies => [...movies.filter((mov) => mov.id !== id)])
+        await deleteMovie(String(removedMovie.movieId));
+        setSavedMovies(movies => [...movies.filter((mov) => mov.movieId !== id)]);
+        setFilteredSavedMovies(movies => [...movies.filter((mov) => mov.movieId !== id)])
       }
     } catch (err) {
       handleRequestError(err);
@@ -318,12 +321,33 @@ function App() {
           <Route
             path="/movies"
             element={
-              <ProtectedRoute Component={Movies} isLogged={isLogged}/>
+              <ProtectedRoute
+                Component={Movies}
+                isLogged={isLogged}
+                movies={showLikedMovies(shownFindedMovies)}
+                onSaveMovie={handleSaveMovie}
+                onRemoveMovie={handleRemoveMovie}
+                onSearch={searchMovies}
+                isDisable={isDisable}
+                onLoadMore={loadMoreMovies}
+                hasLoadMore={shownFindedMovies.length === moviesByThumb.length}
+                onCheck={handleToggleMovies}
+                isFirstSearch={isFirstSearch}
+              />
             }/>
           <Route
             path="/saved-movies"
             element={
-              <ProtectedRoute Component={SavedMovies} isLogged={isLogged}/>
+              <ProtectedRoute
+                Component={SavedMovies}
+                isLogged={isLogged}
+                movies={filteredSavedMovies.map(movie => ({ ...movie, type: 'remove' }))}
+                onRemoveMovie={handleRemoveMovie}
+                onSearch={searchSavedMovies}
+                isDisable={isDisable}
+                onCheck={handleToggleSavedMovies}
+                hasSavedFilms={savedMovies.length}
+              />
             }/>
           <Route
             path="/profile"

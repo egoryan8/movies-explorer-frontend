@@ -27,6 +27,17 @@
   color: var(--gray-text);
 }
 
+.search-form__error {
+  color: var(--red);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  left: 26px
+}
+
 .search-form__button {
   width: 44px;
   height: 44px;

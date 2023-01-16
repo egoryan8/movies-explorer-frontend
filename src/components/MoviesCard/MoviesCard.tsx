@@ -1,26 +1,60 @@
-import React from 'react';
-import MovieIcon from '../../images/movie.png';
+import React, {useEffect, useMemo} from 'react';
 import "./MoviesCard.css";
-import {MoviesCardProps} from "./MoviesCard.props";
-const MoviesCard: React.FC<MoviesCardProps> = ({saved, cross}) => {
-  return (
-    <li className="movies-card">
-      <img src={MovieIcon} alt="" className="movies-card__image"/>
-      <div className="movies-card__overlay">
-        {
-          saved
-          ? cross
-              ? <div className="movies-card__overlay-cross"></div>
-              : <div className="movies-card__overlay-check"></div>
-          : <div className="movies-card__overlay-save">Сохранить</div>
-        }
-      </div>
-      <div className="movies-card__text-wrapper">
-        <h3 className="movies-card__title">33 слова о дизайне</h3>
-        <div className="movies-card__duration">1ч 17м</div>
-      </div>
-    </li>
-  );
-};
+import {formatDuration} from "../../utils/helpers/formatDuration";
+import {useLocation} from "react-router-dom";
+import {log} from "util";
 
-export default MoviesCard ;
+export interface MoviesCardProps {
+  movieId?: number;
+  title: string;
+  duration: number;
+  imageLink: string;
+  trailerLink: string;
+  onSaveMovie: any;
+  onRemoveMovie: any;
+  type?: string;
+}
+
+const MoviesCard: React.FC<MoviesCardProps> =
+  ({
+     movieId,
+     title,
+     duration,
+     imageLink,
+     trailerLink,
+     onSaveMovie,
+     onRemoveMovie,
+     type = 'default',
+   }) => {
+
+    const formatedDuration = useMemo(() => formatDuration(duration), [duration])
+    const location = useLocation().pathname;
+
+    useEffect(() => {
+      console.log(location);
+      console.log('type', type);
+    }, [location, type])
+
+    return (
+      <li className="movies-card">
+        <a href={trailerLink} target="_blank" rel="noreferrer">
+          <img src={imageLink} alt="" className="movies-card__image"/>
+        </a>
+        <div className="movies-card__overlay">
+          {
+            location === '/saved-movies'
+              ? <div className="movies-card__overlay-cross" onClick={() => onRemoveMovie(movieId)}></div>
+              : type === 'saved' ?
+                <div className="movies-card__overlay-check" onClick={() => onRemoveMovie(movieId)}></div>
+                : <div className="movies-card__overlay-save" onClick={() => onSaveMovie(movieId)}>Сохранить</div>
+          }
+        </div>
+        <div className="movies-card__text-wrapper">
+          <h3 className="movies-card__title">{title}</h3>
+          <div className="movies-card__duration">{formatedDuration}</div>
+        </div>
+      </li>
+    );
+  };
+
+export default MoviesCard;

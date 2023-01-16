@@ -7,6 +7,7 @@
   border-radius: 6px;
   object-fit: cover;
   width: 100%;
+  height: 210px;
 }
 
 .movies-card__overlay {
