@@ -1,3 +1,5 @@
+import {MovieI} from "./MoviesApi";
+
 export interface RegisterData {
   name: string,
   email: string,
@@ -59,5 +61,36 @@ export function getUser(token: string) {
       'Content-Type': 'application/json',
       'Authorization' : `Bearer ${token}`,
     }
+  });
+}
+
+export function saveMovie(data: MovieI) {
+  return handleRequest('movies', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+export function deleteMovie(id: string) {
+  return handleRequest(`movies/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+}
+
+export function getMovies() {
+  return handleRequest('movies', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
   });
 }

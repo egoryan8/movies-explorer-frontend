@@ -12,10 +12,25 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import {getUser, login, LoginData, register, RegisterData} from "../../utils/MainApi";
+import {
+  deleteMovie,
+  getMovies,
+  getUser,
+  login,
+  LoginData,
+  register,
+  RegisterData, saveMovie,
+  UpdateData,
+  updateUser
+} from "../../utils/MainApi";
 import {CurrentUserContext, UserI} from "../../contexts/currentUserContext";
 import {calcQuantityByPageWidth} from "../../utils/helpers/calcQuantityByPageWidth";
-import {CardsQuantityI} from "../../utils/constants";
+import {
+  CardsQuantityI,
+  SUCCESS_PROFILE_MESSAGE,
+  TOKEN_MISSMATCH_TEXT,
+  UNAUTHORIZED_ERROR_CODE
+} from "../../utils/constants";
 import {getFilms, MovieI} from "../../utils/MoviesApi";
 
 const registerCaption = {
@@ -236,10 +251,103 @@ function App() {
     authUser();
   }, []);
 
+  // завершение сеанса пользователя
+  // выход из профиля, очистка стейтов и localStorage
   const handleLogout = () => {
     setIsLogged(false);
-    localStorage.removeItem('token');
+    setCurrentUser(null);
+    setIsFirstSearch(true);
+
+    setMovies([]);
+    setSearchedMovies([]);
+    setShownFindedMovies([]);
+    setMoviesByThumb([]);
+
+    setSavedMovies([]);
+    setFilteredSavedMovies([])
+
+    localStorage.clear();
+    sessionStorage.clear();
+
+    navigate('/');
   }
+
+  // универсальная обработка ошибкок для запросов
+  const handleRequestError = (err: any) => {
+    if (err.status === UNAUTHORIZED_ERROR_CODE) {
+      handleLogout();
+      setIsModalErrorOpen(true);
+      setErrorMessage(TOKEN_MISSMATCH_TEXT);
+      console.log(TOKEN_MISSMATCH_TEXT);
+      setTimeout(() => setIsModalErrorOpen(false), 3000)
+      // разное время таймаутов для анимации плавного закрытия
+      setTimeout(() => setErrorMessage(''), 4000)
+    }
+    setServerError(err.message);
+    //показываю ошибку 3 секунды
+    setTimeout(() => setServerError(''), 3000)
+  };
+
+  // обновление профиля
+  const updateUserInfo = async (userData: UpdateData) => {
+    setInRequest(true);
+    try {
+      const user = await updateUser(userData);
+      setCurrentUser(user);
+      setInfoMessage(SUCCESS_PROFILE_MESSAGE);
+      setTimeout(() => setInfoMessage(''), 3000)
+    } catch (err) {
+      handleRequestError(err);
+    }
+    setInRequest(false);
+  }
+
+  // получение фильмов пользователя с mainApi
+  const getSavedMovies = async () => {
+    try {
+      const savedMovies = await getMovies();
+      setSavedMovies(savedMovies);
+      setFilteredSavedMovies(savedMovies);
+    } catch (err) {
+      handleRequestError(err);
+    }
+  };
+
+  // сохранение фильма на mainApi
+  const handleSaveMovie = async (id: number) => {
+    try {
+      const movie = searchedMovies.find(item => item.id === id);
+      if (movie) {
+        const savedMovie = await saveMovie(movie);
+        setSavedMovies(movies => [...movies, savedMovie])
+        setFilteredSavedMovies(movies => [...movies, savedMovie]);
+      }
+    } catch (err) {
+      handleRequestError(err);
+    }
+  };
+
+  // удаление фильма с mainApi
+  const handleRemoveMovie = async (id: number) => {
+    try {
+      const removedMovie = savedMovies.find(movie => movie.id === id);
+      if (removedMovie) {
+        await deleteMovie(String(removedMovie.id));
+        setSavedMovies(movies => [...movies.filter((mov) => mov.id !== id)]);
+        setFilteredSavedMovies(movies => [...movies.filter((mov) => mov.id !== id)])
+      }
+    } catch (err) {
+      handleRequestError(err);
+    }
+  }
+
+  // получение фильмов пользователя при монтировании
+  useEffect(() => {
+    if (isLogged) {
+      getSavedMovies();
+    }
+  }, [isLogged])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
