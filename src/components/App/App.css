@@ -1,5 +1,10 @@
 .page {
   font-family: var(--font-family);
   color: white;
+  background-color: var(--black);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 305px;
 }
 

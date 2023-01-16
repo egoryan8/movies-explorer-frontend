@@ -27,7 +27,6 @@ import {CurrentUserContext, UserI} from "../../contexts/currentUserContext";
 import {calcQuantityByPageWidth} from "../../utils/helpers/calcQuantityByPageWidth";
 import {
   CardsQuantityI,
-  SUCCESS_PROFILE_MESSAGE,
   TOKEN_MISSMATCH_TEXT,
   UNAUTHORIZED_ERROR_CODE
 } from "../../utils/constants";
@@ -48,39 +47,21 @@ const loginCaption = {
 function App() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
-
-  const [isLogged, setIsLogged] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<UserI | null>(null);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // для системных сообщений в попапе
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isModalErrorOpen, setIsModalErrorOpen] = useState<boolean>(false);
-
-  // для показа приветственного сообщения в Movies
+  const [isDisable, setIsDisable] = useState<boolean>(false);
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
-
-  // общий список фильмов от beatFilms
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [serverError, setServerError] = useState<string>('');
   const [movies, setMovies] = useState<MovieI[]>([]);
-  // отфильтрованный список beatFilms
+  const [savedMovies, setSavedMovies] = useState<MovieI[]>([]);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState<MovieI[]>([]);
   const [searchedMovies, setSearchedMovies] = useState<MovieI[]>([]);
-  // список с учетом положения тоггла
   const [moviesByThumb, setMoviesByThumb] = useState<MovieI[]>([]);
   // обрезанный отфильтрованный список beatFilms
   const [shownFindedMovies, setShownFindedMovies] = useState<MovieI[]>([]);
-
-  // сохраненные фильмы с mainApi
-  const [savedMovies, setSavedMovies] = useState<MovieI[]>([]);
-  // отфильтрованные фильмы с mainApi
-  const [filteredSavedMovies, setFilteredSavedMovies] = useState<MovieI[]>([]);
-
-  // блокирование кнопок в момент запроса
-  const [inRequest, setInRequest] = useState(false);
-  // текст ошибки, возвращенный сервером
-  const [serverError, setServerError] = useState('');
-  // текст сообщения при успешном выполнении операции сервером
-  const [infoMessage, setInfoMessage] = useState('');
-
   // кол-во отображаемых и догружаемых по кнопке карточек
   const [cardsQty, setCardsQty] = useState<CardsQuantityI | null>(null);
 
@@ -95,22 +76,72 @@ function App() {
   useEffect(() => {
     let shownMovies = moviesByThumb.slice(0, cardsQty?.initial);
     setShownFindedMovies(shownMovies);
-  }, [moviesByThumb])
+  }, [moviesByThumb]);
+
+  // перерисовка карточек при лайке / дизлайке
+  useEffect(() => {
+    if (savedMovies.length > 0) {
+      showLikedMovies(shownFindedMovies);
+    }
+  }, [savedMovies.length]);
+
+  useEffect(() => {
+    const savedSearch = localStorage.getItem('searchedMovies');
+    if (savedSearch) {
+      setSearchedMovies(JSON.parse(savedSearch));
+    }
+  }, []);
+
+  // хранение фильмов в sessionStorage для восстановления хранилища при релоаде страницы
+
+  useEffect(() => {
+    const initialStorage = sessionStorage.getItem('movies');
+    if (initialStorage) {
+      setMovies(JSON.parse(initialStorage));
+    }
+  }, []);
+
+  // аутентификация при монтировании приложения
+  useEffect(() => {
+    authUser();
+  }, []);
+
+  // получение фильмов пользователя при монтировании
+  useEffect(() => {
+    if (isLogged) {
+      getSavedMovies();
+    }
+  }, [isLogged]);
+
+  const handleRequestError = (err: any) => {
+    if (err.status === UNAUTHORIZED_ERROR_CODE) {
+      handleLogout();
+      setIsModalErrorOpen(true);
+      setErrorMessage(TOKEN_MISSMATCH_TEXT);
+      console.log(TOKEN_MISSMATCH_TEXT);
+      setTimeout(() => setIsModalErrorOpen(false), 3000)
+      // разное время таймаутов для анимации плавного закрытия
+      setTimeout(() => setErrorMessage(''), 4000)
+    }
+    setServerError(err.message);
+    //показываю ошибку 3 секунды
+    setTimeout(() => setServerError(''), 3000)
+  };
 
   const loadMoreMovies = () => {
     const start = shownFindedMovies.length;
 
-    // догружаю больше карточек, если из-за ресайза образовались "пустоты"
-    const incompleteRow = (Math.abs(start - cardsQty!.initial)) % cardsQty!.row;
-    const additionalMoviesQty = incompleteRow && (cardsQty!.row - incompleteRow)
+    // // догружаю больше карточек, если из-за ресайза образовались "пустоты"
+    // const incompleteRow = (Math.abs(start - cardsQty!.initial)) % cardsQty!.row;
+    // const additionalQuantity = incompleteRow && (cardsQty!.row - incompleteRow)
 
-    const end = start + cardsQty!.additional + additionalMoviesQty;
+    const end = start + cardsQty!.additional;
     const additionalMovies = searchedMovies.slice(start, end);
     setShownFindedMovies([...shownFindedMovies, ...additionalMovies]); //TODO: исправить переменные
   }
 
   const getBeatfilmMovies = async () => {
-    setInRequest(true)
+    setIsDisable(true)
     try {
       const movies = await getFilms();
       setMovies(movies);
@@ -118,25 +149,16 @@ function App() {
     } catch (err) {
       console.log(err)
     } finally {
-      setInRequest(false);
+      setIsDisable(false);
     }
-  }
-
+  };
   // добавление в массив поля с типом фильма (лайкнут или нет)
   const showLikedMovies = (movies: MovieI[]) => {
     return movies.map(movie => {
       const match = savedMovies.find(({id}) => id === movie.id);
-      return match ? {...movie, type: 'liked'} : {...movie, type: 'default'}
+      return match ? {...movie, type: 'saved'} : {...movie, type: 'default'}
     });
-  }
-
-  // перерисовка карточек при лайке / дизлайке
-  useEffect(() => {
-    if (savedMovies.length > 0) {
-      showLikedMovies(shownFindedMovies);
-    }
-  }, [savedMovies.length])
-
+  };
   // фильтрация фильмов по строке поиска и чекбоксу
   const filterMovies = (movies: MovieI[], searchValue: string, isShortFilm?: boolean) => {
     return movies.filter(({nameRU, nameEN, duration}) => {
@@ -147,27 +169,23 @@ function App() {
       return toggle && textToMatch.includes(normalizedQuery);
     })
   };
-
   // фильтрация фильмов при изменении переключателя в Movies
   const handleToggleMovies = (searchValue: string, isShortFilm: boolean) => {
     if (searchedMovies.length === 0) return;
     const filteredMovies = filterMovies(searchedMovies, searchValue, isShortFilm);
     setMoviesByThumb(filteredMovies);
   };
-
   // фильтрация фильмов при изменении переключателя в SavedMovies
   const handleToggleSavedMovies = (searchValue: string, isShortFilm: boolean) => {
     if (savedMovies.length === 0) return;
     const filteredMovies = filterMovies(savedMovies, searchValue, isShortFilm);
     setFilteredSavedMovies(filteredMovies);
   };
-
   // поиск по сохраненным фильмам (предварительно загруженным с mainApi)
   const searchSavedMovies = (searchValue: string, isShortFilm: boolean) => {
     const filteredMovies = filterMovies(savedMovies, searchValue, isShortFilm);
     setFilteredSavedMovies(filteredMovies);
-  }
-
+  };
   // поиск фильмов в данных beatfilms
   const searchMovies = async (searchValue: string, isShortFilm: boolean) => {
     setIsFirstSearch(false);
@@ -187,24 +205,7 @@ function App() {
       setMoviesByThumb(filteredMoviesByThumb);
       localStorage.setItem('searchedMovies', JSON.stringify(filteredMovies));
     }
-  }
-
-  useEffect(() => {
-    const savedSearch = localStorage.getItem('searchedMovies');
-    if (savedSearch) {
-      setSearchedMovies(JSON.parse(savedSearch));
-    }
-  }, []);
-
-  // хранение фильмов в sessionStorage для восстановления хранилища при релоаде страницы
-
-  useEffect(() => {
-    const initialStorage = sessionStorage.getItem('movies');
-    if (initialStorage) {
-      setMovies(JSON.parse(initialStorage));
-    }
-  }, [])
-
+  };
   const handleRegister = async (data: RegisterData) => {
     try {
       const user = await register(data);
@@ -214,8 +215,7 @@ function App() {
     } catch (err) {
       console.log(err)
     }
-  }
-
+  };
   const handleLogin = async (data: LoginData) => {
     try {
       const {token} = await login(data);
@@ -227,8 +227,7 @@ function App() {
     } catch (err) {
       console.log(err)
     }
-  }
-
+  };
   // аутентификация при монтировании приложения
   const authUser = async () => {
     try {
@@ -245,14 +244,6 @@ function App() {
       setIsLoading(false);
     }
   };
-
-  // аутентификация при монтировании приложения
-  useEffect(() => {
-    authUser();
-  }, []);
-
-  // завершение сеанса пользователя
-  // выход из профиля, очистка стейтов и localStorage
   const handleLogout = () => {
     setIsLogged(false);
     setCurrentUser(null);
@@ -273,36 +264,17 @@ function App() {
   }
 
   // универсальная обработка ошибкок для запросов
-  const handleRequestError = (err: any) => {
-    if (err.status === UNAUTHORIZED_ERROR_CODE) {
-      handleLogout();
-      setIsModalErrorOpen(true);
-      setErrorMessage(TOKEN_MISSMATCH_TEXT);
-      console.log(TOKEN_MISSMATCH_TEXT);
-      setTimeout(() => setIsModalErrorOpen(false), 3000)
-      // разное время таймаутов для анимации плавного закрытия
-      setTimeout(() => setErrorMessage(''), 4000)
-    }
-    setServerError(err.message);
-    //показываю ошибку 3 секунды
-    setTimeout(() => setServerError(''), 3000)
-  };
 
-  // обновление профиля
   const updateUserInfo = async (userData: UpdateData) => {
-    setInRequest(true);
+    setIsDisable(true);
     try {
       const user = await updateUser(userData);
       setCurrentUser(user);
-      setInfoMessage(SUCCESS_PROFILE_MESSAGE);
-      setTimeout(() => setInfoMessage(''), 3000)
     } catch (err) {
       handleRequestError(err);
     }
-    setInRequest(false);
+    setIsDisable(false);
   }
-
-  // получение фильмов пользователя с mainApi
   const getSavedMovies = async () => {
     try {
       const savedMovies = await getMovies();
@@ -312,8 +284,6 @@ function App() {
       handleRequestError(err);
     }
   };
-
-  // сохранение фильма на mainApi
   const handleSaveMovie = async (id: number) => {
     try {
       const movie = searchedMovies.find(item => item.id === id);
@@ -326,8 +296,6 @@ function App() {
       handleRequestError(err);
     }
   };
-
-  // удаление фильма с mainApi
   const handleRemoveMovie = async (id: number) => {
     try {
       const removedMovie = savedMovies.find(movie => movie.id === id);
@@ -340,13 +308,6 @@ function App() {
       handleRequestError(err);
     }
   }
-
-  // получение фильмов пользователя при монтировании
-  useEffect(() => {
-    if (isLogged) {
-      getSavedMovies();
-    }
-  }, [isLogged])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -367,7 +328,14 @@ function App() {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute Component={Profile} isLogged={isLogged} logout={handleLogout}/>
+              <ProtectedRoute
+                Component={Profile}
+                isLogged={isLogged}
+                logout={handleLogout}
+                onSubmit={updateUserInfo}
+                error={serverError}
+                isLoading={isLoading}
+              />
             }/>
           <Route
             path="sign-up"

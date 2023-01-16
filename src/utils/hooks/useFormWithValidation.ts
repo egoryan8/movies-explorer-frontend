@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 
 function useFormWithValidation() {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isValid, setIsValid] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

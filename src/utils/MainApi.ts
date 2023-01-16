@@ -50,6 +50,7 @@ export const updateUser = (data: UpdateData) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify(data),
   })
@@ -59,7 +60,7 @@ export function getUser(token: string) {
   return handleRequest('users/me', {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization' : `Bearer ${token}`,
+      Authorization : `Bearer ${token}`,
     }
   });
 }
