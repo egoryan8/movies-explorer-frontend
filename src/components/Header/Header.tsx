@@ -4,9 +4,10 @@ import Logo from "../Logo/Logo";
 import './Header.css';
 import Navigation from "../Navigation/Navigation";
 
-interface HeaderProps  {
+interface HeaderProps {
   isLogged: boolean;
 }
+
 const Header: React.FC<HeaderProps> = ({isLogged}) => {
   const path = useLocation().pathname;
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);
@@ -39,10 +40,7 @@ const Header: React.FC<HeaderProps> = ({isLogged}) => {
             />}
           {path === "/"
             ? isLogged ?
-              <Link className='navigation__link navigation__link_type_icon' to='/profile'>
-                Аккаунт
-                <div className='navigation__link-icon navigation__link-icon_type_profile'/>
-              </Link>
+              <Navigation isVisible={isBurgerOpened} onClose={closeBurger}/>
               :
               <div className="header__auth-links">
                 <Link className="header__auth-link" to="/sign-up">Регистрация</Link>
