@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./Login.css";
-import {LoginData} from "../../utils/api";
+import {LoginData} from "../../utils/MainApi";
 
 interface LoginProps {
   handler: (data: LoginData) => void;

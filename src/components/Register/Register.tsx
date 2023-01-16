@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./Register.css";
-import {RegisterData} from "../../utils/api";
+import {RegisterData} from "../../utils/MainApi";
 
 interface RegisterProps {
   handler: (data: RegisterData) => void;
