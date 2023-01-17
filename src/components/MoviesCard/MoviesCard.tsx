@@ -30,11 +30,6 @@ const MoviesCard: React.FC<MoviesCardProps> =
     const formatedDuration = useMemo(() => formatDuration(duration), [duration])
     const location = useLocation().pathname;
 
-    useEffect(() => {
-      console.log(location);
-      console.log('type', type);
-    }, [location, type])
-
     return (
       <li className="movies-card">
         <a href={trailerLink} target="_blank" rel="noreferrer">

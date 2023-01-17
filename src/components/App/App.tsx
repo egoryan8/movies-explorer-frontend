@@ -68,6 +68,10 @@ function App() {
   const setQty = () => setCardsQty(calcQuantityByPageWidth());
 
   useEffect(() => {
+    setQty();
+  }, [])
+
+  useEffect(() => {
     calcQuantityByPageWidth();
     window.addEventListener('resize', setQty);
     return () => window.removeEventListener('resize', setQty);
@@ -131,11 +135,12 @@ function App() {
   const loadMoreMovies = () => {
     const start = shownFindedMovies.length;
 
-    // // догружаю больше карточек, если из-за ресайза образовались "пустоты"
-    // const incompleteRow = (Math.abs(start - cardsQty!.initial)) % cardsQty!.row;
-    // const additionalQuantity = incompleteRow && (cardsQty!.row - incompleteRow)
 
-    const end = start + cardsQty!.additional;
+    // // догружаю больше карточек, если из-за ресайза образовались "пустоты"
+    const incompleteRow = (Math.abs(start - cardsQty!.initial)) % cardsQty!.row;
+    const additionalQuantity = incompleteRow && (cardsQty!.row - incompleteRow)
+
+    const end = start + cardsQty!.additional + additionalQuantity;
     const additionalMovies = searchedMovies.slice(start, end);
     setShownFindedMovies([...shownFindedMovies, ...additionalMovies]); //TODO: исправить переменные
   }
@@ -144,7 +149,6 @@ function App() {
     setIsDisable(true)
     try {
       const movies = await getFilms();
-      console.log('movies: ', movies);
       setMovies(movies);
       return movies;
     } catch (err) {
@@ -191,7 +195,7 @@ function App() {
   const searchMovies = async (searchValue: string, isShortFilm: boolean) => {
     setIsFirstSearch(false);
     localStorage.setItem('searchValue', searchValue);
-    localStorage.setItem('isShortFilm', JSON.stringify(isShortFilm));
+    localStorage.setItem('shortFilmsThumb', JSON.stringify(isShortFilm));
     let tempMovies;
     if (movies.length === 0) {
       tempMovies = await getBeatfilmMovies();
@@ -200,7 +204,6 @@ function App() {
       tempMovies = movies;
     }
     if (tempMovies) {
-      console.log('temp: ', tempMovies.map(m => ({...m, image: `https://api.nomoreparties.co${m.image.url}`})));
       const filteredMovies = filterMovies(tempMovies, searchValue);
       setSearchedMovies(filteredMovies);
       const filteredMoviesByThumb = filterMovies(filteredMovies, searchValue, isShortFilm);
@@ -289,7 +292,6 @@ function App() {
   const handleSaveMovie = async (id: number) => {
     try {
       const movie = searchedMovies.find(item => item.movieId === id);
-      console.log('movie: ', movie);
       if (movie) {
         const savedMovie = await saveMovie(movie);
         setSavedMovies(movies => [...movies, savedMovie])
@@ -329,7 +331,7 @@ function App() {
                 onRemoveMovie={handleRemoveMovie}
                 onSearch={searchMovies}
                 isDisable={isDisable}
-                onLoadMore={loadMoreMovies}
+                onloadMore={loadMoreMovies}
                 hasLoadMore={shownFindedMovies.length === moviesByThumb.length}
                 onCheck={handleToggleMovies}
                 isFirstSearch={isFirstSearch}

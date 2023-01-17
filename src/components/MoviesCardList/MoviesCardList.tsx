@@ -11,7 +11,6 @@ interface MoviesCardListProps {
 
 const MoviesCardList: React.FC<MoviesCardListProps> = ({movies, onSaveMovie, onRemoveMovie}) => {
   return (
-    <div>
       <ul className="movies-list">
         {movies.map(m => (
           <MoviesCard
@@ -28,8 +27,6 @@ const MoviesCardList: React.FC<MoviesCardListProps> = ({movies, onSaveMovie, onR
         ))}
 
       </ul>
-      <button className="movies-list__button">Ещё</button>
-    </div>
   );
 };
 
