@@ -3,7 +3,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
-import {FIND_NOTHING_TEXT, NO_SAVED_FILMS_TEXT} from "../../utils/constants";
+import {NOT_FOUND_MESSAGE, NO_SAVED_FILMS_MESSAGE} from "../../utils/constants";
 import {MovieI} from "../../utils/MoviesApi";
 
 interface SavedMoviesProps {
@@ -50,19 +50,8 @@ const SavedMovies: React.FC<SavedMoviesProps> =
       onCheck(value, shortFilmsThumb);
     }, [shortFilmsThumb])
 
-
-    const hasMovies = movies.length;
-    const preloader = isDisabled ? <Preloader/> : null;
-    const moviesList = !isDisabled && hasMovies ? (
-      <MoviesCardList
-        movies={movies}
-        onRemoveMovie={onRemoveMovie}
-      />
-    ) : null;
-    const message = hasSavedFilms ? FIND_NOTHING_TEXT : NO_SAVED_FILMS_TEXT;
-    const infoMessage = !isDisabled && !hasMovies ? (
-      <p className='saved-movies__info-message'>{message}</p>
-    ) : null;
+    const hasMovies = movies.length > 0;
+    const message = hasSavedFilms ? NOT_FOUND_MESSAGE : NO_SAVED_FILMS_MESSAGE;
 
     return (
       <main className='saved-movies'>
@@ -74,9 +63,16 @@ const SavedMovies: React.FC<SavedMoviesProps> =
             onCheck={handleToggle}
             isChecked={shortFilmsThumb}
           />
-          {preloader}
-          {moviesList}
-          {infoMessage}
+          {isDisabled && <Preloader/>}
+          {!isDisabled && hasMovies
+            && <MoviesCardList
+              movies={movies}
+              onRemoveMovie={onRemoveMovie}
+            />}
+          {!isDisabled && !hasMovies
+            && <p className='saved-movies__info-message'>
+              {message}
+          </p>}
         </div>
       </main>
     );

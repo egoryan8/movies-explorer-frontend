@@ -4,20 +4,19 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import './Movies.css';
 import {MovieI} from "../../utils/MoviesApi";
-import {EMPTY_SEARCH_TEXT, FIND_NOTHING_TEXT, FIRST_SEARCH_TEXT} from "../../utils/constants";
+import {EMPTY_SEARCH_MESSAGE, NOT_FOUND_MESSAGE, FIRST_SEARCH_MESSAGE} from "../../utils/constants";
 
 interface MoviesProps {
   movies: MovieI[];
-  onSaveMovie: any; //TODO: исправить
-  onRemoveMovie: any;
-  onSearch: any;
+  onSaveMovie: (id: number) => void;
+  onRemoveMovie: (id: string) => void;
+  onSearch: (searchValue: string, isShortFilm: boolean) => void;
   isDisable: boolean;
-  onloadMore: any;
-  hasLoadMore: any;
-  onCheck: any;
+  onloadMore: () => void;
+  hasLoadMore: boolean;
+  onCheck: (searchValue: string, isShortFilm: boolean) => void;
   isFirstSearch: boolean;
 }
-
 
 
 const Movies: React.FC<MoviesProps> =
@@ -47,11 +46,9 @@ const Movies: React.FC<MoviesProps> =
     const handleToggle = () => {
       setShortFilmsThumb(v => !v);
     }
-
-    // проверка на пустой запрос
     const onSubmit = () => {
       if (!value) {
-        setValidationMessage(EMPTY_SEARCH_TEXT);
+        setValidationMessage(EMPTY_SEARCH_MESSAGE);
       } else {
         onSearch(value, shortFilmsThumb);
       }
@@ -68,22 +65,8 @@ const Movies: React.FC<MoviesProps> =
       onCheck(value, shortFilmsThumb);
     }, [shortFilmsThumb])
 
-    const hasMovies = movies.length;
-    const preloader = isDisable ? <Preloader/> : null;
-    const moviesList = !isDisable && hasMovies ? (
-      <MoviesCardList
-        movies={movies}
-        onSaveMovie={onSaveMovie}
-        onRemoveMovie={onRemoveMovie}
-      />
-    ) : null;
-    const loadMoreBtn = !isDisable && hasMovies && !hasLoadMore ? (
-      <button type='button' onClick={onloadMore} className='movies__load-btn'>Ещё</button>
-    ) : null;
-    const message = isFirstSearch ? FIRST_SEARCH_TEXT : FIND_NOTHING_TEXT;
-    const infoMessage = !isDisable && !hasMovies ? (
-      <p className='movies__info-message'>{message}</p>
-    ) : null;
+    const hasMovies = movies.length > 0;
+    const message = isFirstSearch ? FIRST_SEARCH_MESSAGE : NOT_FOUND_MESSAGE;
 
     return (
       <main className='movies'>
@@ -97,10 +80,21 @@ const Movies: React.FC<MoviesProps> =
             onSubmit={onSubmit}
             required
           />
-          {preloader}
-          {moviesList} {/*Todo: фиксить весь компонент*/}
-          {loadMoreBtn}
-          {infoMessage}
+          {isDisable && <Preloader/>}
+          {!isDisable && hasMovies
+            && <MoviesCardList
+              movies={movies}
+              onSaveMovie={onSaveMovie}
+              onRemoveMovie={onRemoveMovie}
+            />}
+          {!isDisable && hasMovies && !hasLoadMore
+            && <button type='button' onClick={onloadMore} className='movies__load-btn'>
+              Ещё
+            </button>}
+          {!isDisable && !hasMovies
+            && <p className='movies__info-message'>
+            {message}
+          </p>}
         </div>
       </main>
     );

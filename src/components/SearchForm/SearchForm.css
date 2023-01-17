@@ -69,11 +69,11 @@
 }
 
 .search-form__short-films {
-  margin-top: 28px;
   display: flex;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
+  max-width: 160px;
+  margin: 28px auto 0;
 }
 
 .search-form__thumb-wrapper {

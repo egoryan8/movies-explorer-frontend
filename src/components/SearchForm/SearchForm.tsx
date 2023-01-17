@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './SearchForm.css';
 import inputArrowIcon from '../../images/input-arrow.svg';
 
 interface SearchFormProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  onSearch?: any; //TODO: исправить
+  onSearch?: (searchValue: string, isShortFilm: boolean) => void;
   value: string;
   validationMessage?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onCheck: any;
+  onCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isChecked: boolean;
   onSubmit: () => void;
 }

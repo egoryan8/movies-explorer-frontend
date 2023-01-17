@@ -8,3 +8,23 @@
   min-width: 305px;
 }
 
+.error-popup {
+  min-width: 300px;
+  max-width: 60%;
+  background-color: var(--red);
+  padding: 10px;
+  position: fixed;
+  top: -100%;
+  transform: translateX(-100%);
+  border-radius: 5px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.5);
+  font-size: 12px;
+  transition: transform .3s ease-in;
+}
+
+.error-popup_visible {
+  transform: translateX(0%);
+  top: 50px;
+  left: 10px;
+}
+

@@ -33,7 +33,6 @@ const formatImage = (movies: MovieI[]) => {
 const handleResponse = async (res: Response) => {
   if (res.ok) {
     const movies = await res.json();
-    console.log('movies: ', formatImage(movies));
     return formatImage(movies);
   }
   const err = await res.json();
