@@ -1,27 +1,72 @@
-import React from 'react';
-import main from "../Main/Main";
-import {Link} from "react-router-dom";
-import {AuthPageProps} from "./AuthPage.props";
-import "./AuthPage.css";
+import {Link} from 'react-router-dom';
+import './AuthPage.css';
+import React, {ReactNode} from "react";
 import Logo from "../Logo/Logo";
-const AuthPage: React.FC<AuthPageProps> = ({title, caption,  children}) => {
-  return (
-    <main className="auth">
-        <div className="auth__wrapper">
+import ButtonSubmit from "../ButtonSubmit/ButtonSubmit";
+
+interface AuthPageProps {
+  children: ReactNode;
+  title: string;
+  onSubmit: () => void;
+  isValid: boolean;
+  isLoading: boolean;
+  error: string;
+  type: string;
+}
+
+const AuthPage: React.FC<AuthPageProps> =
+  ({
+     children,
+     title,
+     onSubmit,
+     isValid,
+     isLoading,
+     error,
+     type
+   }) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      onSubmit();
+    }
+
+    const texts = type === 'register'
+      ? {
+        buttonText: 'Зарегистрироваться',
+        linkPath: '/sign-in',
+        linkText: 'Войти',
+        formCaption: 'Уже зарегистрированы?'
+      } : {
+        buttonText: 'Войти',
+        linkPath: '/sign-up',
+        linkText: 'Регистрация',
+        formCaption: 'Ещё не зарегистрированы?'
+      };
+
+    return (
+      <main className='auth-page'>
+        <div className='auth-page__inner'>
           <Logo/>
-          <h1 className="auth__title">{title}</h1>
-          <div className="auth__form">
-            {children}
-          </div>
-          <div className="auth__caption-wrapper">
-            <span className="auth__caption">
-              {caption.text}
-            </span>
-            <Link className="auth__link" to={caption.path}>{caption.linkText}</Link>
+          <h1 className='auth-page__heading'>{title}</h1>
+          <form className='auth-page__form' name={type} onSubmit={handleSubmit}>
+            <fieldset className='auth-page__form-fields'>
+              {children}
+            </fieldset>
+            <div className='auth-page__button-wrapper'>
+              <span className='auth-page__error-message'>{error}</span>
+              <ButtonSubmit disabled={!isValid || isLoading}>
+                {texts.buttonText}
+              </ButtonSubmit>
+            </div>
+          </form>
+          <div className='auth-page__caption'>
+            <p className='auth-page__caption-text'>{texts.formCaption}</p>
+            <Link className='auth-page__link' to={texts.linkPath}>
+              {texts.linkText}
+            </Link>
           </div>
         </div>
-    </main>
-  );
-};
+      </main>
+    );
+  }
 
 export default AuthPage;

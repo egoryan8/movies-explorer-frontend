@@ -11,14 +11,14 @@ interface ProfileInputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const ProfileInput: React.FC<ProfileInputProps> =
   ({title, name, variant, error, value = '', ...props}) => {
-  const formInputClasses = `profile-input__input profile-input__input_variant_${variant}${error? `profile-input__input_variant_${variant}-with-error` : ''}`;
+  const profileInputClasses = `profile-input__input profile-input__input_variant_${variant}${error? `profile-input__input_variant_${variant}-with-error` : ''}`;
   return (
     <div className={`profile-input profile-input_variant_${variant}`}>
       <label className={`profile-input__title_variant_${variant}`} htmlFor={name}>
         {title}
       </label>
       <input
-        className={formInputClasses}
+        className={profileInputClasses}
         id={name}
         name={name}
         value={value}

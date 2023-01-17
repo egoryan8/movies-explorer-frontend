@@ -44,9 +44,10 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: 10;
     padding: 20px;
+    background-color: var(--black);
 }
 
 .preloader__container {

@@ -5,6 +5,7 @@ import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
 import {NOT_FOUND_MESSAGE, NO_SAVED_FILMS_MESSAGE} from "../../utils/constants";
 import {MovieI} from "../../utils/MoviesApi";
+import {Link} from "react-router-dom";
 
 interface SavedMoviesProps {
   movies: MovieI[],
@@ -51,7 +52,6 @@ const SavedMovies: React.FC<SavedMoviesProps> =
     }, [shortFilmsThumb])
 
     const hasMovies = movies.length > 0;
-    const message = hasSavedFilms ? NOT_FOUND_MESSAGE : NO_SAVED_FILMS_MESSAGE;
 
     return (
       <main className='saved-movies'>
@@ -71,7 +71,16 @@ const SavedMovies: React.FC<SavedMoviesProps> =
             />}
           {!isDisabled && !hasMovies
             && <p className='saved-movies__info-message'>
-              {message}
+              {hasSavedFilms
+                ? NOT_FOUND_MESSAGE
+                : <>
+                {NO_SAVED_FILMS_MESSAGE}
+                  <Link to='/movies' className="saved-movies__redirect">
+                    &larr; Перейти на страницу со всеми фильмами
+                  </Link>
+                </>
+
+              }
           </p>}
         </div>
       </main>

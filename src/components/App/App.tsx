@@ -1,8 +1,7 @@
 import './App.css';
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Main from "../Main/Main";
-import React, {useEffect, useState} from "react";
-import AuthPage from "../AuthPage/AuthPage";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Header from "../Header/Header";
@@ -29,18 +28,7 @@ import {
   CardsQuantityI,
 } from "../../utils/constants";
 import {getFilms, MovieI} from "../../utils/MoviesApi";
-
-const registerCaption = {
-  text: "Уже зарегистрированы?",
-  linkText: "Войти",
-  path: "/sign-in",
-};
-
-const loginCaption = {
-  text: "Ещё не зарегистрированы?",
-  linkText: "Регистрация",
-  path: "/sign-up"
-};
+import Preloader from "../Preloader/Preloader";
 
 function App() {
   const navigate = useNavigate();
@@ -60,9 +48,13 @@ function App() {
   const [shownFindedMovies, setShownFindedMovies] = useState<MovieI[]>([]);
   const [cardsQty, setCardsQty] = useState<CardsQuantityI | null>(null);
 
-  const setQty = () => setCardsQty(calcQuantityByPageWidth());
+  const setQty = () => {
+    setTimeout(() => {
+      setCardsQty(calcQuantityByPageWidth())
+    }, 300)
+  };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setQty();
   }, [])
 
@@ -189,7 +181,7 @@ function App() {
       setIsLogged(true);
       navigate('/sign-in')
     } catch (err) {
-      console.log(err)
+      handleRequestError(err);
     }
   };
   const handleLogin = async (data: LoginData) => {
@@ -285,6 +277,10 @@ function App() {
     }
   }
 
+  if (isDisable) {
+    return <Preloader/>
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -337,20 +333,20 @@ function App() {
           <Route
             path="sign-up"
             element={
-              <AuthPage
-                title={"Добро пожаловать!"}
-                caption={registerCaption}>
-                <Register handler={handleRegister}/>
-              </AuthPage>}
+            <Register
+              onSubmit={handleRegister}
+              error={serverError}
+              isLoading={isDisable}
+            />}
           />
           <Route
             path="sign-in"
             element={
-              <AuthPage
-                title={"Рады видеть!"}
-                caption={loginCaption}>
-                <Login handler={handleLogin}/>
-              </AuthPage>}
+            <Login
+              onSubmit={handleLogin}
+              error={serverError}
+              isLoading={isDisable}
+            />}
           />
           <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

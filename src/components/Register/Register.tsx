@@ -1,76 +1,70 @@
-import React, { useState } from 'react';
-import "./Register.css";
-import {RegisterData} from "../../utils/MainApi";
+import React from "react";
+import useFormWithValidation from "../../utils/hooks/useFormWithValidation";
+import AuthPage from "../AuthPage/AuthPage";
+import {EMAIL_PATTERN} from "../../utils/constants";
+import FormInput from "../FormInput/FormInput";
 
 interface RegisterProps {
-  handler: (data: RegisterData) => void;
+  onSubmit: (values: any) => void;
+  error: string;
+  isLoading: boolean;
 }
 
-const Register: React.FC<RegisterProps> = ({handler}) => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+const Register: React.FC<RegisterProps> = ({ onSubmit, error, isLoading }) => {
 
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  }
+  const {
+    values,
+    errors,
+    isValid,
+    onChange,
+  } = useFormWithValidation();
 
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }
-
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = {
-      name,
-      email,
-      password,
-    }
-    handler(data);
-  }
+  const handleSubmit = () => onSubmit(values);
 
   return (
-    <form className="register__wrapper" onSubmit={handleSubmit}>
-      <fieldset className="register">
-        <label className="register__label">
-          Имя
-          <input
-            type="text"
-            className="register__input"
-            placeholder="Введите имя"
-            value={name}
-            onChange={onNameChange}
-          />
-        </label>
-        <label className="register__label">
-          E-mail
-          <input
-            type="email"
-            className="register__input"
-            placeholder="Введите email"
-            value={email}
-            onChange={onEmailChange}
-          />
-        </label>
-        <label className="register__label">
-          Пароль
-          <input
-            type="password"
-            className="register__input register__input_error"
-            placeholder="Введите пароль"
-            value={password}
-            onChange={onPasswordChange}
-          />
-          <span className="register__error">Что-то пошло не так...</span>
-        </label>
-      </fieldset>
-      <button className="register__button" type="submit">Зарегестрироваться</button>
-    </form>
+    <AuthPage
+      type='register'
+      title='Добро пожаловать!'
+      isValid={isValid}
+      onSubmit={handleSubmit}
+      error={error}
+      isLoading={isLoading}
+    >
+      <FormInput
+        value={values.name}
+        error={errors.name}
+        onChange={onChange}
+        variant='max'
+        name='name'
+        title='Имя'
+        type='text'
+        required
+        minLength={3}
+      />
+      <FormInput
+        value={values.email}
+        error={errors.email}
+        onChange={onChange}
+        variant='max'
+        name='email'
+        title='E-mail'
+        type='email'
+        pattern={EMAIL_PATTERN}
+        required
+      />
+      <FormInput
+        value={values.password}
+        error={errors.password}
+        onChange={onChange}
+        variant='max'
+        name='password'
+        title='Пароль'
+        type='password'
+        minLength={6}
+        required
+      />
+    </AuthPage>
   );
-};
+}
 
 export default Register;

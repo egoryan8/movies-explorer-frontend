@@ -13,3 +13,14 @@
   margin: 50px auto;
   padding: 0;
 }
+
+.saved-movies__redirect {
+  color: var(--blue);
+  margin-top: 10px;
+  display: block;
+  transition: opacity 0.4s linear;
+}
+
+.saved-movies__redirect:hover {
+  opacity: 0.6;
+}
