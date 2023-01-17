@@ -1,4 +1,5 @@
 export interface MovieI {
+  _id?: string;
   id?: number;
   movieId?: number,
   nameRU: string,

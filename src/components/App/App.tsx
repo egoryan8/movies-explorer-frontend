@@ -117,6 +117,10 @@ function App() {
     }
   }, [isLogged]);
 
+  useEffect(() => {
+    console.log(savedMovies);
+  }, [savedMovies])
+
   const handleRequestError = (err: any) => {
     if (err.status === UNAUTHORIZED_ERROR_CODE) {
       handleLogout();
@@ -304,8 +308,8 @@ function App() {
   const handleRemoveMovie = async (id: number) => {
     try {
       const removedMovie = savedMovies.find(movie => movie.movieId === id);
-      if (removedMovie) {
-        await deleteMovie(String(removedMovie.movieId));
+      if (removedMovie?._id) {
+        await deleteMovie(removedMovie._id);
         setSavedMovies(movies => [...movies.filter((mov) => mov.movieId !== id)]);
         setFilteredSavedMovies(movies => [...movies.filter((mov) => mov.movieId !== id)])
       }

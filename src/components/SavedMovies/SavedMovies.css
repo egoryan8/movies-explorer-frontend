@@ -4,3 +4,12 @@
   padding-bottom: 78px;
   min-height: calc(100vh - 74px - 207px);
 }
+
+.saved-movies__info-message {
+  color: var(--gray-text);
+  font-size: 14px;
+  text-align: center;
+  width: 80%;
+  margin: 50px auto;
+  padding: 0;
+}
