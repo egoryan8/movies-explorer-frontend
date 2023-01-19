@@ -10,9 +10,17 @@ interface ProfileProps {
   error: string;
   isLoading: boolean;
   logout: () => void;
+  successMessage: string;
 }
 
-const Profile: React.FC<ProfileProps> = ({onSubmit, error, isLoading, logout}) => {
+const Profile: React.FC<ProfileProps>
+  = ({
+       onSubmit,
+       error,
+       isLoading,
+       logout,
+       successMessage
+     }) => {
   const user = useContext(CurrentUserContext);
   const [isUserUpdated, setIsUserUpdated] = useState<boolean>(false);
 
@@ -73,10 +81,10 @@ const Profile: React.FC<ProfileProps> = ({onSubmit, error, isLoading, logout}) =
           </fieldset>
           <div className='profile__buttons'>
             <span className={`profile__message ${error && 'profile__message_type_error'}`}>
-              {error}
+              {successMessage || error}
             </span>
             <button
-              className='profile__button profile__button_type_standart'
+              className='profile__button'
               type='submit'
               disabled={!isValid || !isUserUpdated || isLoading}
             >

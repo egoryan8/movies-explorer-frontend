@@ -25,7 +25,7 @@ import {
 import {CurrentUserContext, UserI} from "../../contexts/currentUserContext";
 import {calcQuantityByPageWidth} from "../../utils/helpers/calcQuantityByPageWidth";
 import {
-  CardsQuantityI,
+  CardsQuantityI, SUCCESS_PROFILE_MESSAGE,
 } from "../../utils/constants";
 import {getFilms, MovieI} from "../../utils/MoviesApi";
 import Preloader from "../Preloader/Preloader";
@@ -40,6 +40,7 @@ function App() {
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [serverError, setServerError] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const [movies, setMovies] = useState<MovieI[]>([]);
   const [savedMovies, setSavedMovies] = useState<MovieI[]>([]);
   const [filteredSavedMovies, setFilteredSavedMovies] = useState<MovieI[]>([]);
@@ -243,6 +244,8 @@ function App() {
     try {
       const user = await updateUser(userData);
       setCurrentUser(user);
+      setSuccessMessage(SUCCESS_PROFILE_MESSAGE);
+      setTimeout(() => setSuccessMessage(''), 3000)
     } catch (err) {
       handleRequestError(err);
     }
@@ -333,6 +336,7 @@ function App() {
                 onSubmit={updateUserInfo}
                 error={serverError}
                 isLoading={isLoading}
+                successMessage={successMessage}
               />
             }/>
           <Route
