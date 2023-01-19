@@ -174,16 +174,7 @@ function App() {
       localStorage.setItem('searchedMovies', JSON.stringify(filteredMovies));
     }
   };
-  const handleRegister = async (data: RegisterData) => {
-    try {
-      const user = await register(data);
-      setCurrentUser(user);
-      setIsLogged(true);
-      navigate('/sign-in')
-    } catch (err) {
-      handleRequestError(err);
-    }
-  };
+
   const handleLogin = async (data: LoginData) => {
     try {
       const {token} = await login(data);
@@ -196,6 +187,20 @@ function App() {
       handleRequestError(err);
     }
   };
+  const handleRegister = async (data: RegisterData) => {
+    try {
+      await register(data);
+      const loginData = {
+        email: data.email,
+        password: data.password,
+      }
+      await handleLogin(loginData);
+      // navigate('/movies');
+    } catch (err) {
+      handleRequestError(err);
+    }
+  };
+
   // аутентификация при монтировании приложения
   const authUser = async () => {
     try {
