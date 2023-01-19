@@ -10,7 +10,7 @@ export interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ Component, isLogged, ...props }) => (isLogged ? (
   <Component {...props} />
 ) : (
-  <Navigate to="/sign-in" />
+  <Navigate to="/" />
 ));
 
 export default ProtectedRoute;
