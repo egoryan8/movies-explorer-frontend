@@ -33,7 +33,7 @@ import Preloader from "../Preloader/Preloader";
 function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<UserI | null>(null);
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState<boolean>(!!localStorage.getItem('token'));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalErrorOpen, setIsModalErrorOpen] = useState<boolean>(false);
   const [isDisable, setIsDisable] = useState<boolean>(false);
