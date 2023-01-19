@@ -1,6 +1,6 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './AuthPage.css';
-import React, {ReactNode} from "react";
+import React, {ReactNode, useEffect} from "react";
 import Logo from "../Logo/Logo";
 import ButtonSubmit from "../ButtonSubmit/ButtonSubmit";
 
@@ -24,6 +24,14 @@ const AuthPage: React.FC<AuthPageProps> =
      error,
      type
    }) => {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (localStorage.getItem('token')) {
+        navigate('/');
+      }
+    }, [])
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       onSubmit();
