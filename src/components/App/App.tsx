@@ -25,7 +25,7 @@ import {
 import {CurrentUserContext, UserI} from "../../contexts/currentUserContext";
 import {calcQuantityByPageWidth} from "../../utils/helpers/calcQuantityByPageWidth";
 import {
-  CardsQuantityI, SUCCESS_PROFILE_MESSAGE,
+  CardsQuantityI, SHORT_FILM_DURATION, SUCCESS_PROFILE_MESSAGE,
 } from "../../utils/constants";
 import {getFilms, MovieI} from "../../utils/MoviesApi";
 import Preloader from "../Preloader/Preloader";
@@ -138,7 +138,7 @@ function App() {
       const textToMatch = (nameRU + nameEN).toLowerCase();
       const normalizedQuery = searchValue.toLowerCase();
 
-      const toggle = isShortFilm ? duration <= 40 : true;
+      const toggle = isShortFilm ? duration <= SHORT_FILM_DURATION : true;
       return toggle && textToMatch.includes(normalizedQuery);
     })
   };

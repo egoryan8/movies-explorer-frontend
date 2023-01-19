@@ -14,5 +14,5 @@ export const NOT_FOUND_MESSAGE = 'По вашему запросу ничего 
 export const NO_SAVED_FILMS_MESSAGE = 'У вас нет сохраненных фильмов'
 export const EMPTY_SEARCH_MESSAGE = 'Введите запрос';
 export const SUCCESS_PROFILE_MESSAGE = 'Профиль успешно изменен';
-export const TOKEN_ERROR = 'Передан невалидный токен. Повторите вход';
+export const SHORT_FILM_DURATION = 40;
 export const EMAIL_PATTERN = '[A-z0-9_.-]{1,}@[A-z0-9_.-]{1,}[.][A-z]{2,6}';
