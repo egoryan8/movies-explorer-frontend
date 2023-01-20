@@ -1,22 +1,59 @@
 import React from 'react';
 import "./Login.css";
+import useFormWithValidation from "../../utils/hooks/useFormWithValidation";
+import {EMAIL_PATTERN} from "../../utils/constants";
+import AuthPage from "../AuthPage/AuthPage";
+import FormInput from "../FormInput/FormInput";
 
-const Register: React.FC = () => {
+interface LoginProps {
+  onSubmit: (values: any) => void;
+  error: string;
+  isLoading: boolean;
+}
+
+const Login: React.FC<LoginProps> = ({onSubmit, error, isLoading}) => {
+  const {
+    values,
+    errors,
+    isValid,
+    onChange,
+  } = useFormWithValidation();
+
+  const handleSubmit = () => onSubmit(values);
+
   return (
-    <div className="login__wrapper">
-      <fieldset className="login">
-        <label className="login__label">
-          E-mail
-          <input type="email" className="login__input" placeholder="Введите email"/>
-        </label>
-        <label className="login__label">
-          Пароль
-          <input type="password" className="login__input" placeholder="Введите пароль"/>
-        </label>
-      </fieldset>
-      <button className="login__button">Войти</button>
-    </div>
+    <AuthPage
+      type='login'
+      title='Рады видеть!'
+      onSubmit={handleSubmit}
+      isValid={isValid}
+      error={error}
+      isLoading={isLoading}
+    >
+      <FormInput
+        value={values.email}
+        error={errors.email}
+        onChange={onChange}
+        variant='max'
+        name='email'
+        title='E-mail'
+        type='email'
+        pattern={EMAIL_PATTERN}
+        required
+      />
+      <FormInput
+        value={values.password}
+        error={errors.password}
+        onChange={onChange}
+        variant='max'
+        name='password'
+        title='Пароль'
+        type='password'
+        minLength={6}
+        required
+      />
+    </AuthPage>
   );
 };
 
-export default Register;
+export default Login;

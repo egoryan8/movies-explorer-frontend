@@ -4,3 +4,37 @@
   padding-bottom: 80px;
   min-height: calc(100vh - 74px - 207px);
 }
+
+.movies__info-message {
+  color: var(--gray-text);
+  font-size: 14px;
+  text-align: center;
+  width: 80%;
+  margin: 50px auto;
+  padding: 0;
+}
+
+.movies__load-btn {
+  margin: 50px auto 90px;
+  display: block;
+  min-width: 320px;
+  max-width: 100%;
+  background-color: #2f2f2f;
+  border-radius: 6px;
+  color: var(--gray-text);
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  padding: 11px 60px 9px;
+  cursor: pointer;
+  border: none;
+}
+
+.movies__load-btn:hover {
+  opacity: .7;
+}
+
+.movies__load-btn:active {
+  transform: scale(0.9);
+}

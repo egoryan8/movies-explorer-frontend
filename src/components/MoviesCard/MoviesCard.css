@@ -7,15 +7,19 @@
   border-radius: 6px;
   object-fit: cover;
   width: 100%;
+  height: 210px;
 }
 
 .movies-card__overlay {
-  opacity: 0;
   position: absolute;
   right: 14px;
   top: 14px;
   transition: opacity 0.3s linear;
   cursor: pointer;
+}
+
+.movies-card__overlay:hover {
+  opacity: 0.8;
 }
 
 .movies-card__overlay-save {
@@ -47,9 +51,6 @@
   background-position: center;
 }
 
-.movies-card:hover .movies-card__overlay {
-  opacity: 1;
-}
 
 .movies-card__text-wrapper {
   margin: 14px 0 0;
