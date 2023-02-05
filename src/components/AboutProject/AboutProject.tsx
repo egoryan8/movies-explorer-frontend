@@ -4,13 +4,13 @@ import './AboutProject.css';
 
 const AboutProject: React.FC = () => {
   return (
-    <section className="about-project">
+    <section className="about-project" id="about-project">
       <div className="content-wrapper">
         <SectionTitle>О проекте</SectionTitle>
         <div className="about-project__cards">
           <div className="about-project__card">
             <h3 className="about-project__card-title">
-              Дипломный проект включал 5 этапов
+               Данный проект включал 5 этапов
             </h3>
             <p className="about-project__card-paragraph">
               Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.
@@ -18,7 +18,7 @@ const AboutProject: React.FC = () => {
           </div>
           <div className="about-project__card">
             <h3 className="about-project__card-title">
-              На выполнение диплома ушло 5 недель
+              На выполнение проекта ушло 5 недель
             </h3>
             <p className="about-project__card-paragraph">
               У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.
