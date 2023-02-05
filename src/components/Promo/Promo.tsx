@@ -8,12 +8,12 @@ const Promo: React.FC = () => {
       <div className="content-wrapper">
         <div className="promo__wrapper">
           <div>
-            <h1 className="promo__title">Учебный проект студента факультета Веб&#8209;разработки.</h1>
+            <h1 className="promo__title">Full-stack проект с поиском и сохранением в избранное фильмов.</h1>
             <p className="promo__paragraph">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
           </div>
           <img className="promo__image" src={PromoImage} alt="Земной шар из текста"/>
         </div>
-        <button className="promo__button">Узнать больше</button>
+        <a href="#about-project" className="promo__button">Узнать больше</a>
       </div>
     </section>
   );

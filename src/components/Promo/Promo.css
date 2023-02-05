@@ -31,6 +31,7 @@
 }
 
 .promo__button {
+  text-decoration: none;
   color: inherit;
   font-family: inherit;
   border: none;
